@@ -22,12 +22,16 @@ public class World : MonoBehaviour
     public static GameObject GetHe3DepoPrefab(){
         return _He3DepoPrefab;
     }
+    public float GetHeightAt(float x, float y){
+        return data.GetHeightAt(x,y);
+    }
     private static GameObject _He3DepoPrefab;
     private static GameObject _HabitatPrefab;
     private static GameObject[] _rockPrefabs;
     WorldData data;
     public GameObject he3DepoPrefab;
     public GameObject habitatPrefab;
+    public GameObject worldBorder;
     public Material highlightMaterial;
     public GameObject[] buildingPrefabs;
     public GameObject[] rockPrefabs;
@@ -38,12 +42,15 @@ public class World : MonoBehaviour
         _rockPrefabs = rockPrefabs;
         _He3DepoPrefab = he3DepoPrefab;
         _HabitatPrefab = habitatPrefab;
-        data = new WorldData(128,0xFFFFFFFF);
+        data = new WorldData(128,0xFF4F23F);
         MeshFilter renderer = gameObject.GetComponent<MeshFilter>();
         renderer.mesh = data.GenerateMesh();
         MeshCollider collider = gameObject.GetComponent<MeshCollider>();
         collider.sharedMesh = renderer.mesh;
         buildingGOs = new GameObject[data.sideSize,data.sideSize];
+        float halfOfWorldSize = (float)data.sideSize / 2.0f;
+        worldBorder.transform.position = new Vector3(halfOfWorldSize,0.5f,halfOfWorldSize);
+        worldBorder.transform.localScale = new Vector3(halfOfWorldSize,1.0f,halfOfWorldSize);
     }
 
     // Update is called once per frame

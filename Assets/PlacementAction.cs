@@ -30,7 +30,8 @@ public class PlacementAction : Action
         highligthGO = chached;
     }
     public override void Display(int x, int y){
-        highligthGO.transform.position = new Vector3((float)x + 0.5f,0.0f,(float)y + 0.5f);
+        float height = w.GetHeightAt((float)x + 0.5f,(float)y + 0.5f);
+        highligthGO.transform.position = new Vector3((float)x + 0.5f,height,(float)y + 0.5f);
     }
     public override void Stop(){
         highligthGO.SetActive(false);

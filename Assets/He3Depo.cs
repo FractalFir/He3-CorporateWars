@@ -8,12 +8,14 @@ public class He3Depo : Building
     GameObject He3DepoGO;
     int x;
     int y;
+    float height;
     //Value in range 0-3
     int rotation;
     public static He3Depo PlaceAt(int x, int y,WorldData data){
         int rotation = data.PlacementNoise(x,y,3,HE3_ROT_SEED);
         He3Depo depo = new He3Depo(x,y,rotation);
         depo.SetupVisuals();
+        depo.height = data.GetHeightAt((float)x + 0.5f,(float)y + 0.5f);
         return depo;
     }
     public override Building PlaceNewAt(int x, int y,WorldData data){
@@ -34,7 +36,7 @@ public class He3Depo : Building
     }
     void SetupVisuals(){
         GameObject prefab = World.GetHe3DepoPrefab();
-        GameObject go = GameObject.Instantiate(prefab,new Vector3((float)x + 0.5f,0.0f,(float)y + 0.5f),Quaternion.AngleAxis(rotation*90, Vector3.up));
+        GameObject go = GameObject.Instantiate(prefab,new Vector3((float)x + 0.5f,height + 0.25f,(float)y + 0.5f),Quaternion.AngleAxis(rotation*90, Vector3.up));
     }
     public override void Tick(){
         //Visuals invliad, reset them!

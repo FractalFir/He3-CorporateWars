@@ -33,7 +33,8 @@ public class CameraController : MonoBehaviour
         }
         //Slowdown
         currSpeed = currSpeed*(1.0f-Time.deltaTime*slowdownTimeScale);
-
         transform.position += currSpeed*Time.deltaTime;
+        if(transform.position.x < 2.0f) currSpeed.x = 4.0f;
+        if(transform.position.z < 2.0f) currSpeed.z = 4.0f;
     }
 }

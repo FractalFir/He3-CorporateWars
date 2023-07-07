@@ -14,6 +14,7 @@ public class Rock : Building
     RockType type;
     [System.NonSerialized()] 
     GameObject rockGO;
+    float height;
     int x;
     int y;
     //Value in range 0-3
@@ -34,6 +35,7 @@ public class Rock : Building
         RockType type = RockFromInt(data.PlacementNoise(x,y,MAX_ROCK_TYPE,ROCK_TYPE_SEED));
         int rotation = data.PlacementNoise(x,y,3,ROCK_ROT_SEED);
         Rock r = new Rock(x,y,type,rotation);
+        r.height = data.GetHeightAt((float)x + 0.5f,(float)y + 0.5f);
         r.SetupVisuals();
         return r;
     }
@@ -56,7 +58,7 @@ public class Rock : Building
     }
     void SetupVisuals(){
         GameObject prefab = World.GetRockGO(type);
-        GameObject go = GameObject.Instantiate(prefab,new Vector3((float)x + 0.5f,0.0f,(float)y + 0.5f),Quaternion.AngleAxis(rockRotation*90, Vector3.up));
+        GameObject go = GameObject.Instantiate(prefab,new Vector3((float)x + 0.5f,height,(float)y + 0.5f),Quaternion.AngleAxis(rockRotation*90, Vector3.up));
     }
     public override void Tick(){
         //Visuals invliad, reset them!

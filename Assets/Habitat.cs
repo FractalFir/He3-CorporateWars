@@ -9,13 +9,15 @@ public class Habitat : Building
     GameObject HabitatGO;
     int x;
     int y;
+    float height;
     //Value in range 0-3
     int rotation;
     public static Habitat PlaceAt(int x, int y,WorldData data){
         int rotation = data.PlacementNoise(x,y,3,HE3_ROT_SEED);
-        Habitat depo = new Habitat(x,y,rotation);
-        depo.SetupVisuals();
-        return depo;
+        Habitat habitat = new Habitat(x,y,rotation);
+        habitat.height = data.GetHeightAt((float)x + 0.5f,(float)y + 0.5f);
+        habitat.SetupVisuals();
+        return habitat;
     }
     public override Building PlaceNewAt(int x, int y,WorldData data){
         return PlaceAt(x,y,data);
@@ -43,7 +45,7 @@ public class Habitat : Building
     }
     void SetupVisuals(){
         GameObject prefab = World.GetHabitatPrefab();
-        GameObject go = GameObject.Instantiate(prefab,new Vector3((float)x + 0.5f,0.0f,(float)y + 0.5f),Quaternion.AngleAxis(rotation*90, Vector3.up));
+        GameObject go = GameObject.Instantiate(prefab,new Vector3((float)x + 0.5f,height,(float)y + 0.5f),Quaternion.AngleAxis(rotation*90, Vector3.up));
     }
     public override void Tick(){
         //Visuals invliad, reset them!

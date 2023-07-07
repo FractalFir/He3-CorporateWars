@@ -79,10 +79,14 @@ public class WorldData
         for(int x = 0; x < size; x++){
             for(int y = 0; y < size; y++){
                 Color color = this[x,y].GetKind().GetColor();
-                vertices[x*size*4 + y*4] = new Vector3((float)x,0.0f,(float)y);
-                vertices[x*size*4 + y*4 + 1] = new Vector3((float)x + 1.0f ,0.0f,(float)y);
-                vertices[x*size*4 + y*4 + 2] = new Vector3((float)x + 1.0f,0.0f,(float)y + 1.0f);
-                vertices[x*size*4 + y*4 + 3] = new Vector3((float)x,0.0f,(float)y + 1.0f);
+                float h1 = GetHeightAt(x,y);
+                float h2 = GetHeightAt(x + 1,y);
+                float h3 = GetHeightAt(x + 1,y + 1);
+                float h4 = GetHeightAt(x,y + 1);
+                vertices[x*size*4 + y*4] = new Vector3((float)x,h1,(float)y);
+                vertices[x*size*4 + y*4 + 1] = new Vector3((float)x + 1.0f ,h2,(float)y);
+                vertices[x*size*4 + y*4 + 2] = new Vector3((float)x + 1.0f,h3,(float)y + 1.0f);
+                vertices[x*size*4 + y*4 + 3] = new Vector3((float)x,h4,(float)y + 1.0f);
                 colors[x*size*4 + y*4] = color;
                 colors[x*size*4 + y*4 + 1] = color;
                 colors[x*size*4 + y*4 + 2] = color;
@@ -111,7 +115,11 @@ public class WorldData
         mesh.RecalculateNormals();
         return mesh;
     }
-    float GetHeightAt(float x, float y){
+    public float GetHeightAt(float x, float y){
+        float height = GetNoiseHeight(x,y);
+        return Mathf.Clamp(height,0.25f,0.75f);
+    } 
+    float GetNoiseHeight(float x, float y){
         float height = Mathf.PerlinNoise(x*NOISE_SCALE + noiseSeedX, y*NOISE_SCALE + noiseSeedY)*.5f;
         height += Mathf.PerlinNoise(x*NOISE_SCALE*.5f + noiseSeedX, y*NOISE_SCALE*.5f + noiseSeedY)*.25f;
         height += Mathf.PerlinNoise(x*NOISE_SCALE*.25f + noiseSeedX, y*NOISE_SCALE*.25f + noiseSeedY)*.125f;
@@ -148,7 +156,7 @@ public class WorldData
         this.noiseSeedY = (float)(seed / System.UInt16.MaxValue);
         for(int x = 0; x < size; x++){
             for(int y = 0; y < size; y++){
-                this.grid[x,y] = new Tile(TileKindFromHeight(GetHeightAt((float)x,(float)y)));
+                this.grid[x,y] = new Tile(TileKindFromHeight(GetNoiseHeight((float)x,(float)y)));
             }
         }
         RandomlyPlaceRocks();
