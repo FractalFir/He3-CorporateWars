@@ -243,7 +243,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 618978945}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 16, y: 1, z: 16}
+  m_LocalPosition: {x: 4, y: 1, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 963194228}
@@ -389,13 +389,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc34942ef62f1e6ddb4b1c1ba3ebfa0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  he3DepoPrefab: {fileID: 280092448942509698, guid: d974bb96bdab8a191a9745250fd33cdf, type: 3}
+  habitatPrefab: {fileID: 4677705315801918700, guid: 94ddbf858caf3ef139603e726f4f1906, type: 3}
   highlightMaterial: {fileID: 2100000, guid: 99ea63bfda6aa07c4a6749762e071013, type: 2}
   buildingPrefabs:
-  - {fileID: 2116414889}
   - {fileID: 8037946908924990665, guid: 45e729e44b3b6e25fa80ce51657a7be3, type: 3}
+  - {fileID: 4677705315801918700, guid: 94ddbf858caf3ef139603e726f4f1906, type: 3}
   rockPrefabs:
   - {fileID: 8611746544295606574, guid: 1e0aa4a387c2511d1a341bd153e30fb0, type: 3}
   - {fileID: 7342288144610547547, guid: 30091781be3da2885b5165af852c18c7, type: 3}
+  - {fileID: 4003438302993618447, guid: 7683fe387863a8e8eae3c0a5ba7a00f5, type: 3}
 --- !u!4 &952882296
 Transform:
   m_ObjectHideFlags: 0

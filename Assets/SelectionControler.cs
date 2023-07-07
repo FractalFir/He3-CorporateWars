@@ -12,13 +12,14 @@ public class SelectionControler : MonoBehaviour
     void Start()
     {
         mainCamera = gameObject.GetComponent<Camera>();
-        action = new PlacementAction(world,BuildingType.TestCube);
+        //action = new PlacementAction(world,Habitat.GetBuilderInstance());
     }
     void SetAction(Action a){
         if(this.action != null){
             this.action.Stop();
         }
         this.action = a;
+        a.Start();
     }
     Vector3 hitTarget;
     // Update is called once per frame
@@ -30,11 +31,12 @@ public class SelectionControler : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(screenPosition);  
         //Vector3 rayStart = mainCamera.ScreenToWorldPoint(screenPosition);
         if (Input.GetKeyDown(KeyCode.Alpha1)){
-            SetAction(new PlacementAction(world,BuildingType.TestCube));
+            SetAction(new PlacementAction(world,Habitat.GetBuilderInstance()));
         }
+        /*
         if (Input.GetKeyDown(KeyCode.Alpha2)){
             SetAction(new PlacementAction(world,BuildingType.HousingLVL1));
-        }
+        }*/
         //Debug.Log($"screenPosition:{screenPosition},rayStart:{rayStart}");
         if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity))
         {

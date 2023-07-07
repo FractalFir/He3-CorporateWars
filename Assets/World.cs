@@ -1,10 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum BuildingType{
-    TestCube,
-    HousingLVL1,
-}
 ///Should be only one instance at a time!
 public class World : MonoBehaviour
 {
@@ -14,12 +10,24 @@ public class World : MonoBehaviour
                 return _rockPrefabs[0];
             case RockType.Rocks2:
                 return _rockPrefabs[1];
+            case RockType.Rocks3:
+                return _rockPrefabs[2];
             default:
                 return _rockPrefabs[0];
         }
     }
+    public static GameObject GetHabitatPrefab(){
+        return _HabitatPrefab;
+    }
+    public static GameObject GetHe3DepoPrefab(){
+        return _He3DepoPrefab;
+    }
+    private static GameObject _He3DepoPrefab;
+    private static GameObject _HabitatPrefab;
     private static GameObject[] _rockPrefabs;
     WorldData data;
+    public GameObject he3DepoPrefab;
+    public GameObject habitatPrefab;
     public Material highlightMaterial;
     public GameObject[] buildingPrefabs;
     public GameObject[] rockPrefabs;
@@ -28,6 +36,8 @@ public class World : MonoBehaviour
     void Start()
     {
         _rockPrefabs = rockPrefabs;
+        _He3DepoPrefab = he3DepoPrefab;
+        _HabitatPrefab = habitatPrefab;
         data = new WorldData(128,0xFFFFFFFF);
         MeshFilter renderer = gameObject.GetComponent<MeshFilter>();
         renderer.mesh = data.GenerateMesh();
@@ -42,22 +52,7 @@ public class World : MonoBehaviour
         
         
     }
-    public GameObject GetBuildingPrefab(BuildingType type){
-        switch(type){
-            case BuildingType.TestCube:
-                return buildingPrefabs[0];
-            case BuildingType.HousingLVL1:
-                return buildingPrefabs[1];
-            default:
-                return buildingPrefabs[0];
-        }
-    }
-    public bool PlaceBuilding(int x, int y,BuildingType type){
-        if(buildingGOs[x,y]){
-            return false;
-        }
-        GameObject prefab = GetBuildingPrefab(type);
-        buildingGOs[x,y] = GameObject.Instantiate(prefab,new Vector3(x + 0.5f,0.0f, y + 0.5f),prefab.transform.rotation);
-        return true;
+    public bool PlaceBuilding(int x, int y,Building type){
+        return data.PlaceBuilding(x,y,type);
     }
 }

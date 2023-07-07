@@ -5,4 +5,7 @@ using UnityEngine;
 public abstract class Building 
 {
     public abstract void Tick();
+    public abstract void RefreshVisuals();
+    public abstract GameObject GetPrefab();
+    public abstract Building PlaceNewAt(int x, int y, WorldData worldData);
 }

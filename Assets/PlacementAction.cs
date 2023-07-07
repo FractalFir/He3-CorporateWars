@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class PlacementAction : Action
 {
-    static Dictionary<BuildingType,GameObject> highlightChache = new Dictionary<BuildingType,GameObject>(); 
+    static Dictionary<Building,GameObject> highlightChache = new Dictionary<Building,GameObject>(); 
     GameObject highligthGO;
-    BuildingType type;
-    public PlacementAction(World w, BuildingType type){
+    Building type;
+    World w;
+    public PlacementAction(World w, Building type){
+        this.type = type;
+        this.w = w;
+        Start();
+    }
+    public override void Start(){
         GameObject chached;
         highlightChache.TryGetValue(type, out chached);
         if(chached == null){
-            chached = GameObject.Instantiate(w.GetBuildingPrefab(type));
+            chached = GameObject.Instantiate(type.GetPrefab());
             MeshRenderer renderer = chached.GetComponent<MeshRenderer>();
             renderer.material = w.highlightMaterial;
             foreach(Collider c in chached.GetComponents<Collider> ()) {
@@ -22,7 +28,6 @@ public class PlacementAction : Action
         }
         chached.SetActive(true);
         highligthGO = chached;
-        this.type = type;
     }
     public override void Display(int x, int y){
         highligthGO.transform.position = new Vector3((float)x + 0.5f,0.0f,(float)y + 0.5f);
