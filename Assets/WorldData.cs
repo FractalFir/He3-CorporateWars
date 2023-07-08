@@ -40,6 +40,7 @@ public class WorldData
     Tile[,] grid;
     Building[,] buildings;
     int size;
+    uint _turn;
     const float NOISE_SCALE = 0.125f;
     public int PlacementNoise(int x, int y,int max,float rSeed){
         return (int)(Mathf.PerlinNoise(x*.5f + noiseSeedX + rSeed, y*.5f + noiseSeedY - rSeed*0.242f)*max);
@@ -49,15 +50,30 @@ public class WorldData
     public bool PlaceBuilding(int x, int y,Building type){
         if(buildings[x,y] == null){
             buildings[x,y] = type.PlaceNewAt(x, y, this);
+            buildings[x,y].RefreshVisuals();
             return true;
         }
         return false;
+    }
+    public void ReplaceBuilding(int x, int y,Building type){
+        buildings[x,y] = type;
+        buildings[x,y].RefreshVisuals();
+    }
+    public uint turn{
+        get => _turn;
+    }
+    public void NextTurn(){
+        _turn += 1;
+        foreach(Building building in buildings){
+            if(building != null) building.Tick(this);
+        }
     }
     public void RandomlyPlaceRocks(){
          for(int x = 0; x < size; x++){
             for(int y = 0; y < size; y++){
                 if (0 == PlacementNoise(x,y,4,ROCK_SEED)){
                     this.buildings[x,y] = Rock.PlaceAt(x,y,this);
+                    this.buildings[x,y].RefreshVisuals();
                 }
             }
         }
@@ -67,6 +83,7 @@ public class WorldData
             for(int y = 0; y < size; y++){
                 if (0 == PlacementNoise(x,y,32,HE_3_DEPO_SEED)){
                     this.buildings[x,y] = He3Depo.PlaceAt(x,y,this);
+                    this.buildings[x,y].RefreshVisuals();
                 }
             }
         }
@@ -154,6 +171,7 @@ public class WorldData
         this.seed = seed;
         this.noiseSeedX = (float)(seed % System.UInt16.MaxValue);
         this.noiseSeedY = (float)(seed / System.UInt16.MaxValue);
+        this._turn = 1;
         for(int x = 0; x < size; x++){
             for(int y = 0; y < size; y++){
                 this.grid[x,y] = new Tile(TileKindFromHeight(GetNoiseHeight((float)x,(float)y)));

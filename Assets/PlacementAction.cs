@@ -17,7 +17,7 @@ public class PlacementAction : Action
         GameObject chached;
         highlightChache.TryGetValue(type, out chached);
         if(chached == null){
-            chached = GameObject.Instantiate(type.GetPrefab());
+            chached = GameObject.Instantiate(type.GetDisplayPrefab());
             MeshRenderer renderer = chached.GetComponent<MeshRenderer>();
             renderer.material = w.highlightMaterial;
             foreach(Collider c in chached.GetComponents<Collider> ()) {

@@ -12,13 +12,7 @@ public class Rock : Building
     const float ROCK_TYPE_SEED = 577.2446536f;
     const float ROCK_ROT_SEED = 224.244252265f;
     RockType type;
-    [System.NonSerialized()] 
-    GameObject rockGO;
-    float height;
-    int x;
-    int y;
     //Value in range 0-3
-    int rockRotation;
     static RockType RockFromInt(int type){
         switch(type){
             case 0: 
@@ -34,36 +28,24 @@ public class Rock : Building
     public static Building PlaceAt(int x, int y,WorldData data){
         RockType type = RockFromInt(data.PlacementNoise(x,y,MAX_ROCK_TYPE,ROCK_TYPE_SEED));
         int rotation = data.PlacementNoise(x,y,3,ROCK_ROT_SEED);
-        Rock r = new Rock(x,y,type,rotation);
+        Rock r = new Rock(x,y,type,(byte)rotation);
         r.height = data.GetHeightAt((float)x + 0.5f,(float)y + 0.5f);
-        r.SetupVisuals();
         return r;
     }
     public override Building PlaceNewAt(int x, int y,WorldData data){
         return PlaceAt(x,y,data);
     }
-    private Rock(int x, int y, RockType type,int rockRotation){
+    private Rock(int x, int y, RockType type,byte rotation){
         this.type = type;
-        this.rockRotation = rockRotation;
+        this.rotation = rotation;
         this.x = x;
         this.y = y;
     }
-    public override void RefreshVisuals(){
-        if(rockGO == null){
-            SetupVisuals();
-        }
-    }
     public override GameObject GetPrefab(){
-        return World.GetRockGO(type);
+        return World.GetRockPrefab(type);
     }
-    void SetupVisuals(){
-        GameObject prefab = World.GetRockGO(type);
-        GameObject go = GameObject.Instantiate(prefab,new Vector3((float)x + 0.5f,height,(float)y + 0.5f),Quaternion.AngleAxis(rockRotation*90, Vector3.up));
-    }
-    public override void Tick(){
-        //Visuals invliad, reset them!
-        if(rockGO == null){
-            SetupVisuals();
-        }
+    public override void Tick(WorldData data){
+        //If Visuals invliad, reset them!
+        RefreshVisuals();
     }
 }

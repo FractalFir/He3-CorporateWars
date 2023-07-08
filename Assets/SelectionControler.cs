@@ -33,6 +33,9 @@ public class SelectionControler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1)){
             SetAction(new PlacementAction(world,Habitat.GetBuilderInstance()));
         }
+        if (Input.GetKeyDown(KeyCode.Alpha2)){
+            SetAction(new PlacementAction(world,ConstructionSite.GetBuilderInstance(Habitat.GetBuilderInstance())));
+        }
         /*
         if (Input.GetKeyDown(KeyCode.Alpha2)){
             SetAction(new PlacementAction(world,BuildingType.HousingLVL1));
