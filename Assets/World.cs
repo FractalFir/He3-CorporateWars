@@ -19,18 +19,21 @@ public class World : MonoBehaviour
     public static GameObject GetHabitatPrefab() => _HabitatPrefab;
     public static GameObject GetHe3DepoPrefab() => _He3DepoPrefab;
     public static GameObject GetConstructionSitePrefab() => _ConstructionSitePrefab;
+    public static GameObject GetIceDepoPrefab() => _IceDepoPrefab;
     public float GetHeightAt(float x, float y){
         return worldData.GetHeightAt(x,y);
     }
     private static GameObject _He3DepoPrefab;
     private static GameObject _ConstructionSitePrefab;
     private static GameObject _HabitatPrefab;
+    private static GameObject _IceDepoPrefab;
     private static GameObject[] _rockPrefabs;
     WorldData worldData;
     public GameObject he3DepoPrefab;
     public GameObject constructionSitePrefab;
     public GameObject habitatPrefab;
     public GameObject worldBorder;
+    public GameObject iceDepoPrefab;
     public Material highlightMaterial;
     public GameObject[] buildingPrefabs;
     public GameObject[] rockPrefabs;
@@ -42,6 +45,7 @@ public class World : MonoBehaviour
         _rockPrefabs = rockPrefabs;
         _He3DepoPrefab = he3DepoPrefab;
         _HabitatPrefab = habitatPrefab;
+        _IceDepoPrefab = iceDepoPrefab;
         _ConstructionSitePrefab = constructionSitePrefab;
         worldData = new WorldData(128,0xFF4F23F);
         MeshFilter renderer = gameObject.GetComponent<MeshFilter>();

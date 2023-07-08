@@ -47,6 +47,7 @@ public class WorldData
     }
     const float ROCK_SEED = 324.2453563f;
     const float HE_3_DEPO_SEED = 134.42345f;
+    const float ICE_3_DEPO_SEED = 22.23233f;
     public bool PlaceBuilding(int x, int y,Building type){
         if(buildings[x,y] == null){
             buildings[x,y] = type.PlaceNewAt(x, y, this);
@@ -69,10 +70,20 @@ public class WorldData
         }
     }
     public void RandomlyPlaceRocks(){
+      for(int x = 0; x < size; x++){
+            for(int y = 0; y < size; y++){
+                if (0 == PlacementNoise(x,y,4,ROCK_SEED) && this.buildings[x,y] == null){
+                    this.buildings[x,y] = Rock.PlaceAt(x,y,this);
+                    this.buildings[x,y].RefreshVisuals();
+                }
+            }
+        }
+    }
+    public void RandomlyPlaceIceDepos(){
          for(int x = 0; x < size; x++){
             for(int y = 0; y < size; y++){
-                if (0 == PlacementNoise(x,y,4,ROCK_SEED)){
-                    this.buildings[x,y] = Rock.PlaceAt(x,y,this);
+                if (0 == PlacementNoise(x,y,16,ICE_3_DEPO_SEED) && this.buildings[x,y] == null){
+                    this.buildings[x,y] = IceDepo.PlaceAt(x,y,this);
                     this.buildings[x,y].RefreshVisuals();
                 }
             }
@@ -81,7 +92,7 @@ public class WorldData
     public void RandomlyPlaceHe3Depos(){
          for(int x = 0; x < size; x++){
             for(int y = 0; y < size; y++){
-                if (0 == PlacementNoise(x,y,32,HE_3_DEPO_SEED)){
+                if (0 == PlacementNoise(x,y,32,HE_3_DEPO_SEED) && this.buildings[x,y] == null){
                     this.buildings[x,y] = He3Depo.PlaceAt(x,y,this);
                     this.buildings[x,y].RefreshVisuals();
                 }
@@ -177,8 +188,9 @@ public class WorldData
                 this.grid[x,y] = new Tile(TileKindFromHeight(GetNoiseHeight((float)x,(float)y)));
             }
         }
-        RandomlyPlaceRocks();
         RandomlyPlaceHe3Depos();
+        RandomlyPlaceIceDepos();
+        RandomlyPlaceRocks();
     }
     public bool IsWithinRange(int posX, int posY, int targetX,int targetY,int range){
         if(targetX < 0 || targetY < 0 || targetX >= this.sideSize || targetY >= this.sideSize){
